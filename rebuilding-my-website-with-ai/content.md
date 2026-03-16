@@ -30,12 +30,6 @@ Then I said something reckless: *"Clean it all up."*
 
 And it did. Methodically. It knew you can't just delete a content delivery network — you have to disable it first and wait. It knew you have to empty storage buckets before deleting them. It knew DNS zones need their records removed first. Step by step, it cleaned out everything, and my AWS bill dropped to zero.
 
-## The Moment It Corrected Me
-
-Here's a small detail I keep thinking about. Early on, I told Copilot my domain was registered on AWS. It checked, and politely corrected me — the domain was actually on GoDaddy, just with some settings pointing to AWS.
-
-That's the moment I realized this wasn't just a code generator. It was verifying things. It was being careful. That set the tone for everything that followed.
-
 ## Rethinking the Architecture
 
 With the old setup gone, it was time to decide what comes next. I already had a partially built site running on Azure — a modern frontend, a Kotlin backend, and a full CMS system. But the CMS felt like too much. It needed its own server, its own database, a bunch of secret keys, and it didn't handle traffic spikes well.
