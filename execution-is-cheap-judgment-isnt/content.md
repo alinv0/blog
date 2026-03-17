@@ -116,11 +116,11 @@ repository.
 
 Here is how the infrastructure fits together:
 
-![Infrastructure and deployment pipeline](infra-diagram.png)
+![Infrastructure and deployment pipeline](infra-diagram.svg)
 
 And here is how the application components interact at runtime:
 
-![Application component architecture](components-diagram.png)
+![Application component architecture](components-diagram.svg)
 
 The frontend is a React SPA served behind Nginx, which also handles
 bot detection for SEO pre-rendering and proxies API requests to the
