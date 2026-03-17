@@ -84,17 +84,25 @@ corrections were frequent — small adjustments that individually seem
 trivial but collectively determine whether a site feels considered or
 generic.
 
-The more interesting example was performance. A Kotlin web application
+Then there was cost. The initial architecture Copilot produced included a
+provisioned PostgreSQL database — a reasonable default for a web
+application, but entirely wrong for a personal blog with minimal traffic.
+I replaced it with an embedded database and opted for a scale-to-zero
+model with cold starts instead of keeping resources running
+continuously. That single decision eliminated the largest line item in
+the monthly bill.
+
+Which introduced the next problem: performance. A Kotlin web application
 on Azure, scaling from zero, has a cold start problem. The first request
 after an idle period hits a JVM that needs to warm up, and the user pays
 for that latency.
 
-Copilot did not flag this. I did. And the solution — pre-rendering
-static content for the latest twenty articles so the site always has
-something to serve instantly — was an architectural decision that came
-from understanding the runtime behavior, the user experience trade-off,
-and the operational model. It was not a coding problem. It was a
-judgment call.
+Copilot did not flag either of these. I did. And the solution —
+pre-rendering static content for the latest twenty articles so the site
+always has something to serve instantly — was an architectural decision
+that came from understanding the runtime behavior, the cost trade-off,
+and the operational model. These were not coding problems. They were
+judgment calls.
 
 ------------------------------------------------------------------------
 
