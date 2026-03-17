@@ -1,5 +1,5 @@
 ---
-title: "Execution Is Cheap Now. Judgment Isn't."
+title: "Execution Is Cheap Now. Judgment Isn't. (Part 1)"
 slug: execution-is-cheap-judgment-isnt-part1
 excerpt: "AI is compressing engineering loops. It is also raising the cost of poor decisions. A look at how implementation friction approaching zero changes what matters in software engineering."
 category: engineering
@@ -10,9 +10,6 @@ publishedAt: 2026-03-16T12:00:00Z
 coverImage: cover.png
 tags: ai, engineering, architecture, decision-making, simplicity
 ---
-# Execution Is Cheap Now. Judgment Isn't.
-
-### AI is compressing engineering loops. It is also raising the cost of poor decisions.
 
 I recently rebuilt my personal website. Not because the previous version
 was failing, but because it had gradually accumulated the kind of
