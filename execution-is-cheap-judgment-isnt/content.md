@@ -106,6 +106,35 @@ judgment calls.
 
 ------------------------------------------------------------------------
 
+## What it looks like
+
+The result is a system with clear separation of concerns. The article
+content lives in its own repository, independent of the application
+code. A publishing pipeline bridges the two — syncing articles to
+Azure Blob Storage and triggering deployments through the application
+repository.
+
+Here is how the infrastructure fits together:
+
+![Infrastructure and deployment pipeline](infra-diagram.png)
+
+And here is how the application components interact at runtime:
+
+![Application component architecture](components-diagram.png)
+
+The frontend is a React SPA served behind Nginx, which also handles
+bot detection for SEO pre-rendering and proxies API requests to the
+backend. The Kotlin backend reads article content from Blob Storage,
+parses Markdown to HTML, and serves it through a REST API with a
+sixty-minute cache. Static data for the most recent articles is
+pre-generated at build time so the site loads instantly — even when the
+backend is cold.
+
+None of this is novel. But arriving at this architecture — and the
+trade-offs it represents — required decisions that AI did not make.
+
+------------------------------------------------------------------------
+
 ## What this taught me
 
 The rebuild confirmed something I had been suspecting: execution is
