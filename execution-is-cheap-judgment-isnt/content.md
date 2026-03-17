@@ -87,10 +87,10 @@ generic.
 Then there was cost. The initial architecture Copilot produced included a
 provisioned PostgreSQL database — a reasonable default for a web
 application, but entirely wrong for a personal blog with minimal traffic.
-I replaced it with an embedded database and opted for a scale-to-zero
-model with cold starts instead of keeping resources running
-continuously. That single decision eliminated the largest line item in
-the monthly bill.
+I replaced it with plain Markdown files stored on Azure Blob Storage and
+opted for a scale-to-zero model with cold starts instead of keeping
+resources running continuously. That single decision eliminated the
+largest line item in the monthly bill.
 
 Which introduced the next problem: performance. A Kotlin web application
 on Azure, scaling from zero, has a cold start problem. The first request
