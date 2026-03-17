@@ -1,0 +1,13 @@
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#f1f5f9', 'primaryTextColor': '#1e293b', 'primaryBorderColor': '#16a34a', 'lineColor': '#64748b', 'secondaryColor': '#e2e8f0', 'tertiaryColor': '#f8fafc', 'background': '#ffffff', 'mainBkg': '#f1f5f9', 'nodeBorder': '#16a34a', 'clusterBkg': '#f8fafc', 'clusterBorder': '#cbd5e1', 'edgeLabelBackground': '#f1f5f9', 'nodeTextColor': '#1e293b', 'fontSize': '14px'}}}%%
+graph LR
+    user["👤 User"]
+
+    user --> nginx["Nginx"]
+
+    nginx -->|"static"| spa["React SPA<br/><i>+ pre-rendered articles</i>"]
+    nginx -->|"/v1/* proxy"| api["REST API<br/><i>Kotlin + Spring Boot</i>"]
+
+    api --> cache["In-Memory Cache<br/><i>60 min TTL</i>"]
+    api --> md["Markdown → HTML"]
+
+    cache --> blob["☁️ Blob Storage<br/><i>Articles + Images</i>"]

@@ -1,0 +1,15 @@
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#f1f5f9', 'primaryTextColor': '#1e293b', 'primaryBorderColor': '#16a34a', 'lineColor': '#64748b', 'secondaryColor': '#e2e8f0', 'tertiaryColor': '#f8fafc', 'background': '#ffffff', 'mainBkg': '#f1f5f9', 'nodeBorder': '#16a34a', 'clusterBkg': '#f8fafc', 'clusterBorder': '#cbd5e1', 'edgeLabelBackground': '#f1f5f9', 'nodeTextColor': '#1e293b', 'fontSize': '14px'}}}%%
+graph LR
+    blog["📝 Blog Repo<br/><i>Articles + Markdown</i>"]
+    site["⚙️ App Repo<br/><i>Code + Infrastructure</i>"]
+
+    blog -->|"publish"| blob["☁️ Azure Blob Storage<br/><i>Articles + Images</i>"]
+    blog -->|"sync"| site
+
+    site -->|"CI/CD"| acr["🐳 Container Registry"]
+
+    acr --> frontend["Frontend<br/><i>Nginx + React</i>"]
+    acr --> backend["Backend<br/><i>Kotlin + Spring Boot</i>"]
+
+    frontend -->|"proxy"| backend
+    backend -->|"read"| blob
