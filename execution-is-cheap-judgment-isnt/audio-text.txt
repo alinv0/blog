@@ -42,10 +42,10 @@ generating code within a framework I had defined. The difference matters.
 What AI actually did
 
 The scope was significant. Copilot handled:
-removing the existing AWS infrastructure\
-rewriting the entire backend from Rust to Kotlin\
-rewriting the frontend\
-provisioning Azure infrastructure\
+removing the existing AWS infrastructure
+rewriting the entire backend from Rust to Kotlin
+rewriting the frontend
+provisioning Azure infrastructure
 styling the terminal-inspired look and feel of the site
 
 This is work that would have taken me weeks of evenings and weekends.
@@ -96,7 +96,7 @@ Here is how the infrastructure fits together:
 
 And here is how the application components interact at runtime:
 
-The frontend is a React SPA served behind Nginx, which also handles
+The frontend is a React SPA served behind Engine X, which also handles
 bot detection for SEO pre-rendering and proxies API requests to the
 backend. The Kotlin backend reads article content from Blob Storage,
 parses Markdown to HTML, and serves it through a REST API with a
