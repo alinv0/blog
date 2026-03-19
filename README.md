@@ -20,8 +20,9 @@ make sync
 
 | Command | Description |
 |---------|-------------|
-| `make add FOLDER=name` | Optimize images, update inventory, commit + push |
+| `make add FOLDER=name` | Optimize images, generate audio, update inventory, commit + push |
 | `make delete FOLDER=name` | Remove article, update inventory, commit + push |
+| `make audio FOLDER=name` | Regenerate audio for an article (deletes existing) |
 | `make sync` | Upload to Azure Blob Storage + trigger CI/CD deploy |
 | `make list` | List all articles |
 
@@ -32,7 +33,13 @@ my-article/
   content.md      # Markdown with YAML frontmatter (required)
   cover.png       # Cover image (optional, always named cover.png)
   diagram.png     # Any referenced images (optional)
+  audio.mp3       # Auto-generated TTS audio (via edge-tts)
 ```
+
+## Prerequisites
+
+- Node.js (for image optimization)
+- Python 3 + `pip install edge-tts` (for audio generation)
 
 ## Frontmatter Template
 
