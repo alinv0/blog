@@ -1,1 +1,9 @@
 node_modules/
+
+# Local tooling — not tracked in git
+Makefile
+manage.ps1
+inventory.json
+package.json
+package-lock.json
+scripts/
