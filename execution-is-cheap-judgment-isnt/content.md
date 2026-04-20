@@ -4,13 +4,12 @@ slug: execution-is-cheap-judgment-isnt
 excerpt: "I rebuilt my personal website from scratch — new cloud, new language, new architecture — using AI for nearly all of the implementation. Here's what that taught me about where engineering value actually lives."
 category: engineering
 categoryName: Engineering
-author: Alin Voinea
-authorBio: Software Engineer
-publishedAt: 2026-03-16T12:00:00Z
+author: "Alin Voinea"
+authorBio: "Software Engineer"
+publishedAt: "2026-03-16T12:00:00Z"
 coverImage: cover.png
-tags: ai, engineering, architecture, decision-making, kotlin
+tags: "ai, engineering, architecture, decision-making, kotlin"
 ---
-
 I recently rebuilt my personal website. Not because it was broken — it
 was working fine. But I had four reasons that, taken together, made a
 compelling case.
@@ -158,7 +157,7 @@ have spent more time correcting AI output than writing the code myself.
 ## Closing
 
 This is my first blog post. The website it is published on is also the
-project it describes — which feels appropriate.
+project it describes —  test-edit which feels appropriate.
 
 If there is one takeaway, it is this: AI is a powerful execution engine,
 but it runs on the judgment you feed it. Define your constraints clearly,

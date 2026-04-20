@@ -1,0 +1,97 @@
+There is a moment in every AI-assisted coding session where you look at the output and think: this is basically done.
+
+The code compiles. The tests pass. The endpoint returns the right shape. The component renders. You feel that rush of productivity — what took a day now took twenty minutes. The temptation to move on is overwhelming. GitHub's own study found Copilot users complete tasks up to 55% faster (GitHub Copilot Productivity Research). The speed is addictive.
+
+Do not move on.
+
+That feeling of doneness is the trap. What you are looking at is the 90% — the structural skeleton of a solution, assembled quickly and competently by a model that is very good at producing code that looks correct. The remaining 10% is where the actual engineering lives. And in my experience, that last 10% is where AI consistently falls short.
+
+The happy path is not the product
+
+AI excels at the happy path. Give it a clear description of what a function should do, and it will produce a clean implementation that handles the expected inputs and returns the expected outputs. This is genuinely impressive and genuinely useful.
+
+But software does not run on happy paths. It runs on the edges — the null that should not be null, the network call that times out, the user who submits the form twice, the integer that overflows, the string that contains a semicolon. Production is a collection of edge cases held together by optimism.
+
+When I was rebuilding my site, Copilot generated a Markdown parser that worked beautifully on well-formed content. Clean headings, properly closed code blocks, standard YAML frontmatter. It passed every test I had written for normal articles. Then I fed it an article with a missing frontmatter closing delimiter. The parser did not throw an error. It did not return a meaningful failure. It silently consumed the entire file as YAML metadata and returned an empty body. In production, that would have been a blank page with no indication of what went wrong.
+
+The fix was straightforward — a guard clause and a descriptive exception. But the AI never wrote that guard clause on its own. It solved the problem as stated, not the problem as it exists in the real world.
+
+This isn't just anecdotal. Research shows LLM-generated code pass rates drop by up to 29% when tested against comprehensive edge cases rather than basic test suites (Liu et al., NeurIPS 2023).
+
+Error handling is an afterthought
+
+This pattern repeats everywhere. AI-generated code tends to treat error handling as something you add later, if at all. The main logic is there. The structure is sound. But the failure modes are either missing or naive.
+
+I have seen this consistently across backend and frontend code. A service method that calls an external API but has no timeout configuration. A React component that displays data from a query hook but has no error state — just an eternal loading spinner when the backend is down. A file upload handler that validates the content type but not the file size.
+
+Each of these is a small gap. None of them will surface in a demo or a local development session. All of them will surface in production, often at the worst possible time.
+
+The problem is not that AI cannot write error handling code — it can, if you ask for it explicitly. The problem is that it does not know when error handling is needed. It does not model failure. It models success and produces code that assumes success will continue.
+
+Again, the prtevious study directly links this gap to the limitations in training data and benchmark design. If the prompt doesn't mention error states, they rarely appear in the code.
+
+Security is invisible until it isn't
+
+Security is a special case of the same problem, and a more dangerous one.
+
+AI-generated code is remarkably consistent at producing functional solutions that have subtle security gaps. Not because the model is careless, but because security is contextual. You need to understand what the code is protecting, who might abuse it, and what the consequences of a breach would be. That understanding does not live in the prompt.
+
+During my site rebuild, the contact form endpoint went through several iterations. The AI-generated version accepted input, validated the required fields, and stored the message. Functionally complete. But there was no rate limiting, no input length cap, and no HTML sanitization on the message body. An attacker could have used it as a spam relay, or injected content that would render unsafely if the messages were ever displayed in an admin interface.
+
+None of these issues are hard to fix. Rate limiting is a few lines of configuration. Input validation is a few annotations. Sanitization is a single library call. But the AI did not produce any of them unprompted, because from the model's perspective the function was complete — it received a message and stored it.
+
+Research out of NYU Tandon has found that code models generate functions with security vulnerabilities at an alarming rate, unless security is specified explicitly (Pearce et al., 2022). In a systematic study, roughly 40% of Copilot-generated programs were found to be vulnerable to attacks mapped to MITRE’s CWE Top 25 (NYU Tandon CCS Research).
+
+The gap between "functionally complete" and "production-safe" is where security lives. And it is almost always invisible in the 90%.
+
+Operational behavior is not in the training data
+
+There is another category that AI handles poorly, and it might be the most consequential: operational behavior.
+
+How does this code behave under load? What happens when the database connection pool is exhausted? How much memory does this allocate when processing a large payload? What does this look like in the logs when it fails at 3am?
+
+These are not questions about what the code does. They are questions about how the code lives — in a container, on a network, with constrained resources, serving real users who do unexpected things.
+
+When Copilot generated my backend service layer, it produced clean, well-structured code that followed the patterns I had defined. But the first version had no caching. Every page load hit Azure Blob Storage to fetch and parse Markdown content. For a blog with low traffic, the functional impact was negligible. The cost impact was not — and neither was the latency for the user sitting behind a cold-start container that then makes a synchronous call to a storage service.
+
+I added a cache with a five-minute TTL. That was a decision about operational behavior — about how this system should perform in its actual deployment environment. The AI did not make that decision because it did not know the deployment environment existed.
+
+Empirical studies make it clear: code models perform dramatically worse when tasks require project-level context beyond standalone functions, and they rarely optimize for operational realities unless prompted (Yu et al., CoderEval). Models have little sense of scale, deployment specifics, or runtime environments — they generate code that works in isolation but ignores the system it will live in.
+
+Speed makes the trap worse
+
+Here is the paradox: the faster AI gets you to 90%, the more dangerous the remaining 10% becomes.
+
+When you write code manually, you encounter the edge cases as you go. You write the database query and immediately think about what happens when the result set is empty. You build the API endpoint and naturally consider what happens when the request body is malformed. The slow pace of manual implementation gives you time to think about failure.
+
+AI removes that friction. The code appears fully formed, and your brain skips the consideration phase because the solution already looks complete. You shift from author to reviewer, but the review is biased by the apparent completeness of what you are reviewing. It is much harder to find what is missing than to find what is wrong.
+
+Thoughtworks’ research on generative AI in software delivery highlights the same problem: the shift from writing code to reviewing AI-generated code leads to review fatigue and automation bias, where developers unconsciously trust suggestions and miss what should have been questioned (Böckeler, Coding Assistance — How Can It Get in the Way?). The NYU research on Copilot confirms the same bias: omissions in security and error handling are the hardest gaps to spot in review.
+
+This is the 90% trap: not that AI produces bad code, but that it produces good-enough code so quickly that you lose the space to think about what is absent.
+
+Working with the trap
+
+I am not arguing against AI-assisted development. I use it daily. The productivity gains are real and substantial. But I have learned to treat the 90% as a draft, not a deliverable.
+
+In practice, this means a few things.
+
+First, I write the tests before the implementation — not after. When the AI generates code, it lands into a test harness that already defines the expected behavior, including the failure modes. The happy path tests pass immediately. The edge case tests fail. And those failures are the 10% made visible.
+
+Kent Beck’s classic TDD approach surfaces failures early (Beck, TDD By Example), but with AI code, the need is even sharper. Research confirms that providing LLMs with tests alongside problem statements consistently improves code generation outcomes (Mathews et al., TDD for Code Generation).
+
+Second, I ask adversarial questions. After the AI produces a solution, I think about how it breaks. What if this input is empty? What if this call fails? What if someone sends a million of these? The AI is good at answering these questions when you ask them — it just does not ask them itself.
+
+Third, I treat security and operational concerns as first-class requirements, not afterthoughts. Rate limits, input validation, caching strategies, timeout configurations — these go into the spec alongside the functional requirements. If they are not in the prompt, they will not be in the code.
+
+And fourth, I resist the urge to move on when the code "looks done." That moment of apparent completeness is precisely when I slow down. The 90% cost me twenty minutes. The remaining 10% might take even a day or more. But that time is the difference between a prototype and a product.
+
+The real skill
+
+The 90% trap reveals something about what engineering skill actually means in the age of AI.
+
+It is not the ability to produce code. AI does that now, and it does it well. The skill is the ability to see what is missing in code that appears complete. To ask the questions the model did not ask. To understand the environment the code will run in, the users who will interact with it, and the ways it will fail.
+
+That last 10% has always been the hard part of software engineering. AI did not change that. It just made it easier to skip.
+
+Do not skip it.
