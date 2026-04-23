@@ -9,6 +9,7 @@ authorBio: "Software Engineer"
 publishedAt: "2026-03-16T12:00:00Z"
 coverImage: cover.png
 tags: "ai, engineering, architecture, decision-making, kotlin"
+status: published
 ---
 I recently rebuilt my personal website. Not because it was broken — it
 was working fine. But I had four reasons that, taken together, made a

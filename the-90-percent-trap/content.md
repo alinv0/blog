@@ -40,6 +40,7 @@ linkedinPost: |
   Full article: https://alinvoinea.eu/blog/the-90-trap-why-ai-generated-code-feels-done-but-isnt
   
   #softwareengineering #aicode #productivity #devops #security
+status: published
 ---
 There is a moment in every AI-assisted coding session where you look at the output and think: this is basically done.
 
