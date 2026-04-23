@@ -21,7 +21,6 @@ linkedinPost: |
   Next time someone says they need an "AI debugging course," ask them how they debug a third-party library. Same process, right?
   
   #AIDebugging #SoftwareEngineering #LegacyCode #CodingWithAI
-status: published
 ---
 # You Already Know How to Debug AI Code
 
