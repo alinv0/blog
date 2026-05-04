@@ -7,3 +7,7 @@ inventory.json
 package.json
 package-lock.json
 scripts/
+
+# Brain (local-only)
+.brain-registered
+.vscode/mcp.json

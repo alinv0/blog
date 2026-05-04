@@ -21,12 +21,24 @@ import sys
 import tempfile
 from pathlib import Path
 
-try:
-    import azure.cognitiveservices.speech as speechsdk
-except ImportError:
-    print("ERROR: azure-cognitiveservices-speech not installed.", file=sys.stderr)
-    print("  Run: pip install azure-cognitiveservices-speech", file=sys.stderr)
-    sys.exit(1)
+# Azure speech SDK is loaded lazily by `generate_audio` so this module can be
+# imported as a library (e.g. by prosecraft for transcript generation) without
+# requiring the optional dependency.
+speechsdk = None
+
+
+def _ensure_speechsdk():
+    """Lazy-import the Azure Speech SDK; exit with a helpful message if missing."""
+    global speechsdk
+    if speechsdk is not None:
+        return
+    try:
+        import azure.cognitiveservices.speech as _speechsdk  # noqa: WPS433
+    except ImportError:
+        print("ERROR: azure-cognitiveservices-speech not installed.", file=sys.stderr)
+        print("  Run: pip install azure-cognitiveservices-speech", file=sys.stderr)
+        sys.exit(1)
+    speechsdk = _speechsdk
 
 VOICE = "en-US-AndrewMultilingualNeural"
 OUTPUT_FILENAME = "audio.mp3"
@@ -126,6 +138,7 @@ def _synthesize_chunk(speech_config, ssml: str, output_path: Path) -> None:
 
 def generate_audio(text: str, output_path: Path) -> None:
     """Generate MP3 audio from text using Azure AI Speech, chunking long texts."""
+    _ensure_speechsdk()
     speech_key = os.environ.get("AZURE_SPEECH_KEY")
     speech_region = os.environ.get("AZURE_SPEECH_REGION")
 
