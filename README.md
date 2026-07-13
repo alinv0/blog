@@ -2,6 +2,16 @@
 
 Articles and discussions for [alinvoinea.eu](https://www.alinvoinea.eu).
 
+> ## ⚠️ Deprecated — this publishing flow is retired
+>
+> Article storage has **moved to Azure Blob Storage** (container `content`, prefix `articles/`).
+> Content — articles, images, audio, and `inventory.json` — is now authored with **prosecraft**,
+> which writes directly to Blob. The website backend reads it from Blob at runtime.
+>
+> The `manage.ps1` / `make add` / `make sync` flow described below is **no longer used** and is kept
+> for historical reference only. This repository is retained (not deleted) for its git history of
+> past articles. Do not publish new content from here.
+
 ## Quick Start
 
 ```bash
